@@ -10,7 +10,7 @@ cd /app
 unzip /tmp/user.zip
 npm install
 dnf install mongodb-org-shell -y
-mongo --host 172.31.89.76 </app/schema/user.js
+mongo --host mongodb.kr7348202.online </app/schema/user.js
 
 systemctl daemon-reload
 
