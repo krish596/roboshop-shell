@@ -8,10 +8,9 @@ mkdir /app
 curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user.zip
 cd /app
 unzip /tmp/user.zip
-cd /app
 npm install
 dnf install mongodb-org-shell -y
-mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js
+mongo --host 172.31.89.76 </app/schema/user.js
 
 systemctl daemon-reload
 
