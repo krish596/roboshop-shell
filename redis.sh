@@ -3,4 +3,4 @@ dnf module enable redis:remi-6.2 -y
 dnf install redis -y
 #Update listen address from 127.0.0.1 to 0.0.0.0 in /etc/redis.conf & /etc/redis/redis.conf
 systemctl enable redis
-systemctl start redis
+systemctl restart redis
