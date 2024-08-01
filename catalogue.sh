@@ -13,6 +13,7 @@ unzip /tmp/catalogue.zip
 cd /app
 npm install
 dnf install mongodb-org-shell -y
+
 mongo --host 172.31.89.76 </app/schema/catalogue.js
 
 systemctl daemon-reload
