@@ -8,9 +8,8 @@ useradd roboshop
 mkdir /app
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 cd /app
-rm -rf /app
 unzip /tmp/catalogue.zip
-cd /app
+
 npm install
 dnf install mongodb-org-shell -y
 
