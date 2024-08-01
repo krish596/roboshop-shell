@@ -3,11 +3,12 @@ cp mongo.repo /etc/yum.repos.d/mongo.repo
 dnf module disable nodejs -y
 dnf module enable nodejs:18 -y
 dnf install nodejs -y
-rm -rf roboshop
+
 useradd roboshop
 mkdir /app
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 cd /app
+rm -rf /app
 unzip /tmp/catalogue.zip
 cd /app
 npm install
