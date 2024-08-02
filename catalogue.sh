@@ -1,31 +1,32 @@
+log=/tmp/roboshop.log
 echo -e "\e[32m>>>>>>>>>>>>>Download Catalogue Service File<<<<<<<<<<<<<<<\e[0m"
-cp catalogue.service /etc/systemd/system/catalogue.service &>>/tmp/roboshop.log
+cp catalogue.service /etc/systemd/system/catalogue.service &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Download Mongo Repo file<<<<<<<<<<<<<<<\e[0m"
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>>/tmp/roboshop.log
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Disable NodeJS<<<<<<<<<<<<<<<\e[0m"
-dnf module disable nodejs -y &>>/tmp/roboshop.log
+dnf module disable nodejs -y &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Enable NodeJS<<<<<<<<<<<<<<<\e[0m"
-dnf module enable nodejs:18 -y &>>/tmp/roboshop.log
+dnf module enable nodejs:18 -y &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Install NodeJS<<<<<<<<<<<<<<<\e[0m"
-dnf install nodejs -y &>>/tmp/roboshop.log
+dnf install nodejs -y &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Create Application User<<<<<<<<<<<<<<<\e[0m"
-useradd roboshop &>>/tmp/roboshop.log
+useradd roboshop &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Remove Application Directory<<<<<<<<<<<<<<<\e[0m"
-rm -rf /app &>>/tmp/roboshop.log
+rm -rf /app &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Create Application Directory<<<<<<<<<<<<<<<\e[0m"
-mkdir /app &>>/tmp/roboshop.log
+mkdir /app &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Download Application Content<<<<<<<<<<<<<<<\e[0m"
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>>/tmp/roboshop.log
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>>${log}
 cd /app
 echo -e "\e[32m>>>>>>>>>>>>>Extract Content<<<<<<<<<<<<<<<\e[0m"
-unzip /tmp/catalogue.zip &>>/tmp/roboshop.log
+unzip /tmp/catalogue.zip &>>${log}
 echo -e "\e[32m>>>>>>>>>>>>>Install NPM<<<<<<<<<<<<<<<\e[0m"
-npm install &>>/tmp/roboshop.log
-echo -e "\e[32m>>>>>>>>>>>>>Install Mongo Client<<<<<<<<<<<<<<<\e[0m" | tee -a /tmp/roboshop.log
-dnf install mongodb-org-shell -y &>>/tmp/roboshop.log
-echo -e "\e[32m>>>>>>>>>>>>>Load Mongo Schema<<<<<<<<<<<<<<<\e[0m" | tee -a /tmp/roboshop.log
-mongo --host mongodb.kr7348202.online </app/schema/catalogue.js &>>/tmp/roboshop.log
-echo -e "\e[32m>>>>>>>>>>>>>Start Catalogue Service<<<<<<<<<<<<<<<\e[0m" | tee -a /tmp/roboshop.log
+npm install &>>${log}
+echo -e "\e[32m>>>>>>>>>>>>>Install Mongo Client<<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+dnf install mongodb-org-shell -y &>>${log}
+echo -e "\e[32m>>>>>>>>>>>>>Load Mongo Schema<<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+mongo --host mongodb.kr7348202.online </app/schema/catalogue.js &>>${log}
+echo -e "\e[32m>>>>>>>>>>>>>Start Catalogue Service<<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 
-systemctl enable catalogue &>>/tmp/roboshop.log | tee -a /tmp/roboshop.log
-systemctl restart catalogue &>>/tmp/roboshop.log | tee -a /tmp/roboshop.log
+systemctl enable catalogue &>>${log} | tee -a ${log}
+systemctl restart catalogue &>>${log} | tee -a ${log}
