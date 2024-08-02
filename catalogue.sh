@@ -1,21 +1,31 @@
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 cp catalogue.service /etc/systemd/system/catalogue.service
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 cp mongo.repo /etc/yum.repos.d/mongo.repo
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 dnf module disable nodejs -y
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 dnf module enable nodejs:18 -y
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 dnf install nodejs -y
-
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 useradd roboshop
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 rm -rf /app
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 mkdir /app
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 cd /app
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 unzip /tmp/catalogue.zip
-
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 npm install
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 dnf install mongodb-org-shell -y
-
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 mongo --host mongodb.kr7348202.online </app/schema/catalogue.js
-
+echo -e "\e[32m>>>>>>>>>>>>>Hello World<<<<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload
 
 systemctl enable catalogue
