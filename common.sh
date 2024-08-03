@@ -5,7 +5,11 @@ func_apppreq() {
   cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
   echo $?
   echo -e "\e[32m>>>>>>>>>>>>>Create Application ${component}<<<<<<<<<<<<<<<\e[0m"
-  useradd roboshop &>>${log}
+  id roboshop &>>${log}
+  if [ $? -nt 0 ]; then
+    useradd roboshop &>>${log}
+  fi
+
   echo $?
   echo -e "\e[32m>>>>>>>>>>>>>Remove Application Directory<<<<<<<<<<<<<<<\e[0m"
   rm -rf /app &>>${log}
