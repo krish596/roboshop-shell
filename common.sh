@@ -43,3 +43,18 @@ func_nodejs() {
   func_systemd
 }
 
+func_java() {
+  echo -e "\e[32m>>>>>>>>>>>>>Install Maven<<<<<<<<<<<<<<<\e[0m"
+  dnf install maven -y &>>${log}
+  
+  func_apppreq
+  echo -e "\e[32m>>>>>>>>>>>>>Clean Maven Package<<<<<<<<<<<<<<<\e[0m"
+  mvn clean package &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Replace Maven Package<<<<<<<<<<<<<<<\e[0m"
+  mv target/${component}-1.0.jar ${component}.jar &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Install MySQL<<<<<<<<<<<<<<<\e[0m"
+  dnf install mysql -y &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Load MySQL Schema<<<<<<<<<<<<<<<\e[0m"
+  mysql -h mysql.kr7348202.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
+  func_systemd
+}
