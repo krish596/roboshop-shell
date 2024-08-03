@@ -60,7 +60,7 @@ func_java() {
 }
 
 func_python() {
-  echo -e "\e[32m>>>>>>>>>>>>>Install Python Package<<<<<<<<<<<<<<<\e[0m"
+  echo -e "\e[32m>>>>>>>>>>>>>Build ${component} Service<<<<<<<<<<<<<<<\e[0m"
   dnf install python36 gcc python3-devel -y &>>${log}
   func_apppreq
   echo -e "\e[32m>>>>>>>>>>>>>Install PIP Package<<<<<<<<<<<<<<<\e[0m"
