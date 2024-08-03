@@ -58,3 +58,12 @@ func_java() {
   mysql -h mysql.kr7348202.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
   func_systemd
 }
+
+func_python() {
+  echo -e "\e[32m>>>>>>>>>>>>>Install Python Package<<<<<<<<<<<<<<<\e[0m"
+  dnf install python36 gcc python3-devel -y &>>${log}
+  func_apppreq
+  echo -e "\e[32m>>>>>>>>>>>>>Install PIP Package<<<<<<<<<<<<<<<\e[0m"
+  pip3.6 install -r requirements.txt &>>${log}
+  func_systemd
+}
