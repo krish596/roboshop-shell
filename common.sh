@@ -1,2 +1,45 @@
+log=/tmp/roboshop.log
 
+func_apppreq() {
+  echo -e "\e[32m>>>>>>>>>>>>>Download ${component} Service File<<<<<<<<<<<<<<<\e[0m"
+  cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Create Application ${component}<<<<<<<<<<<<<<<\e[0m"
+  useradd roboshop &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Remove Application Directory<<<<<<<<<<<<<<<\e[0m"
+  rm -rf /app &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Create Application Directory<<<<<<<<<<<<<<<\e[0m"
+  mkdir /app &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Download Application Content<<<<<<<<<<<<<<<\e[0m"
+  curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip &>>${log}
+  cd /app
+  echo -e "\e[32m>>>>>>>>>>>>>Extract Content<<<<<<<<<<<<<<<\e[0m"
+  unzip /tmp/${component}.zip &>>${log}  
+}
+
+func_systemd() {
+  echo -e "\e[32m>>>>>>>>>>>>>Start ${component} Service<<<<<<<<<<<<<<<\e[0m"
+  systemctl daemon-reload &>>${log}
+  systemctl enable ${component} &>>${log}
+  systemctl restart ${component} &>>${log}  
+}
+func_nodejs() {
+  
+  
+  echo -e "\e[32m>>>>>>>>>>>>>Download Mongo Repo file<<<<<<<<<<<<<<<\e[0m"
+  cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Disable NodeJS<<<<<<<<<<<<<<<\e[0m"
+  dnf module disable nodejs -y &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Enable NodeJS<<<<<<<<<<<<<<<\e[0m"
+  dnf module enable nodejs:18 -y &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Install NodeJS<<<<<<<<<<<<<<<\e[0m"
+  dnf install nodejs -y &>>${log}
+  func_apppreq
+  echo -e "\e[32m>>>>>>>>>>>>>Install NPM<<<<<<<<<<<<<<<\e[0m"
+  npm install &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Install Mongo Client<<<<<<<<<<<<<<<\e[0m"
+  dnf install mongodb-org-shell -y &>>${log}
+  echo -e "\e[32m>>>>>>>>>>>>>Load Mongo Schema<<<<<<<<<<<<<<<\e[0m"
+  mongo --host mongodb.kr7348202.online </app/schema/${component}.js &>>${log}
+  func_systemd
+}
 
