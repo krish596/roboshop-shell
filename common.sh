@@ -1,7 +1,7 @@
 log=/tmp/roboshop.log
 
 func_exit_status() {
-  if [ $? -nt 0 ]; then
+  if [ $? -eq 0 ]; then
     echo -e "\e[31mSUCCESS\e[0m"
   else
     echo -e "\e[32mFAILURE\e[0m"
