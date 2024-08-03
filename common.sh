@@ -108,6 +108,8 @@ func_python() {
   func_apppreq
   echo -e "\e[32m>>>>>>>>>>>>>Install PIP Package<<<<<<<<<<<<<<<\e[0m"
   pip3.6 install -r requirements.txt &>>${log}
+
+  sed -i "s/rabbitmq_root_password/${rabbitmq_root_password}/" /etc/systemd/system/${component}.service
   func_exit_status
   func_systemd
 }
