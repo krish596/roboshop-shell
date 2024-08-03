@@ -22,6 +22,25 @@ func_systemd() {
   systemctl enable ${component} &>>${log}
   systemctl restart ${component} &>>${log}  
 }
+
+func_schema_setup() {
+  if [ ${schema_type} == "mongodb" ]; then
+    echo -e "\e[32m>>>>>>>>>>>>>Install Mongo Client<<<<<<<<<<<<<<<\e[0m"
+    dnf install mongodb-org-shell -y &>>${log}
+    echo -e "\e[32m>>>>>>>>>>>>>Load Mongo Schema<<<<<<<<<<<<<<<\e[0m"
+    mongo --host mongodb.kr7348202.online </app/schema/${component}.js &>>${log}
+
+  fi
+
+  if [ ${schema_type} == "mysql" ]; then
+    echo -e "\e[32m>>>>>>>>>>>>>Install MySQL<<<<<<<<<<<<<<<\e[0m"
+    dnf install mysql -y &>>${log}
+    echo -e "\e[32m>>>>>>>>>>>>>load schema<<<<<<<<<<<<<<<\e[0m"
+    mysql -h mysql.kr7348202.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
+
+  fi
+
+}
 func_nodejs() {
   
   
@@ -36,10 +55,7 @@ func_nodejs() {
   func_apppreq
   echo -e "\e[32m>>>>>>>>>>>>>Install NPM<<<<<<<<<<<<<<<\e[0m"
   npm install &>>${log}
-  echo -e "\e[32m>>>>>>>>>>>>>Install Mongo Client<<<<<<<<<<<<<<<\e[0m"
-  dnf install mongodb-org-shell -y &>>${log}
-  echo -e "\e[32m>>>>>>>>>>>>>Load Mongo Schema<<<<<<<<<<<<<<<\e[0m"
-  mongo --host mongodb.kr7348202.online </app/schema/${component}.js &>>${log}
+  func_schema_setup
   func_systemd
 }
 
@@ -52,10 +68,7 @@ func_java() {
   echo -e "\e[32m>>>>>>>>>>>>>Build ${component} Service  <<<<<<<<<<<<<<<\e[0m"
   mvn clean package &>>${log}
   mv target/${component}-1.0.jar ${component}.jar &>>${log}
-  echo -e "\e[32m>>>>>>>>>>>>>Install MySQL<<<<<<<<<<<<<<<\e[0m"
-  dnf install mysql -y &>>${log}
-  echo -e "\e[32m>>>>>>>>>>>>> MySQL Schema Client<<<<<<<<<<<<<<<\e[0m"
-  mysql -h mysql.kr7348202.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
+  func_schema_setup
   func_systemd
 }
 
@@ -67,3 +80,5 @@ func_python() {
   pip3.6 install -r requirements.txt &>>${log}
   func_systemd
 }
+
+
